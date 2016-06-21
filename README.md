@@ -50,9 +50,7 @@ As complexity arises, `bash` syntax gets more and more cryptic.
 My interim solution for it was this:
 
 ```bash
-#!/usr/bin/env bash
-set -x
-set -e
+#!/bin/bash -xe
 
 COMMAND=$*
 
@@ -64,13 +62,17 @@ DONE=$(
   RESULT=$(
     while [[ $COUNTER -lt 10 ]] \
     && ! eval $COMMAND 1>&3 2>&4 \
-    &&  sleep $(($COUNTER*10)); do
+    && sleep $(($COUNTER*10)); do
       echo "Retry $COUNTER..."
       let COUNTER++
     done
   )
   echo YES
 )
+
+if [ -z "$DONE" ] || [ "$DONE" == \'\' ]; then
+  exit 1
+fi
 ```
 
 Hacky, but does the job. Now it's time I have a version I can run anywhere without
