@@ -18,9 +18,16 @@ From source just run `make` and put the `try` executable somewhere handy.
 
    Usage: try [options] <cmd>
 
-   Sample: try -i=100ms docker pull ubuntu:latest
+   Sample: try -i=10s -r=10 docker pull ubuntu:latest
+
+           Run the command up to 10 times, with the start interval of 10 seconds,
+           doubling the interval on every iteration.
 
    Options:
+
+     -i, --interval             start interval time (default to 1s)
+     -r, --retries              amount of retries (default to 10)
+     -f, --factor               multiply interval by this factor (default to 2)
 
      -h, --help                 this help page
      -v, --version              print out version
@@ -74,6 +81,6 @@ thinking of pipe alias syntax, or sub-shell trapping.
 If you don't have it yet, you can install `watch` to continuously build the project:
 
 ```
-repos/try λ ./watch make
+repos/try λ watch make
 exit: 0
 ```
