@@ -5,8 +5,6 @@
 
 ```
 go get github.com/ostera/try
-
-brew install https://raw.githubusercontent.com/ostera/homebrew-core/master/Formula/go-try.rb
 ```
 
 From source just run `make` and put the `try` executable somewhere handy.
@@ -84,5 +82,16 @@ If you don't have it yet, you can install `watch` to continuously build the proj
 
 ```
 repos/try λ watch make
+/Users/leostera/.go/bin/gometalinter @.gometalinter
+/usr/local/bin/go vet
+/usr/local/bin/go build -o ./watch
+/usr/local/bin/go test
+PASS
+ok      _/Users/leostera/repos/watch    0.013s
+/usr/local/bin/go test -bench .
+PASS
+BenchmarkRunSuccessfully-4           500           3860598 ns/op
+BenchmarkRunExit-4                   300           3834855 ns/op
+ok      _/Users/leostera/repos/watch    3.908s
 exit: 0
 ```

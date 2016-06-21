@@ -44,7 +44,7 @@ func main() {
 		die(0, "Executable not found in PATH")
 	}
 
-  factorDuration := time.Duration(factor)
+	factorDuration := time.Duration(factor)
 
 	interval, err := time.ParseDuration(i)
 	if err != nil {

@@ -14,11 +14,13 @@ func die(status int, message string) {
 }
 
 func backoff(d time.Duration, f time.Duration, r int, fn func()) {
-  repeat:
-    if r == 0 { return }
-    fn()
-    time.Sleep(d)
-    d = d*f
-    r--
-  goto repeat
+repeat:
+	if r == 0 {
+		return
+	}
+	fn()
+	time.Sleep(d)
+	d = d * f
+	r--
+	goto repeat
 }
