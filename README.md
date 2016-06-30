@@ -3,6 +3,10 @@
 
 ## Installation
 
+Get your preferred binary flavour from the [releases page](https://github.com/ostera/try/releases).
+
+Or if you have a go environment:
+
 ```
 go get github.com/ostera/try
 ```
@@ -40,7 +44,7 @@ The main pain point was re-running commands that are affected by transient error
 All of these are typically vulnerable to transient network errors.
 
 It's fairly straightforward to do a while loop in bash to repeat the command if it
-fails, but you don't want it to run infintely, and you also want to see the output
+fails, but you don't want it to run infinitely, and you also want to see the output
 as it executes, and it should capture command failures gracefully and not explode.
 
 As complexity arises, `bash` syntax gets more and more cryptic.
