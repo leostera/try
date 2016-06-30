@@ -2,12 +2,15 @@
 
 PREFIX ?= /usr/local
 GO = $(shell which go)
+VERSION="$(shell git describe HEAD)"
+NAME=$(shell basename $(shell pwd))
 
 all: lint build test benchmark
 
 ci: setup all
 
 setup:
+	go get -u github.com/ostera/oh-my-gosh/lib
 	go get -u github.com/alecthomas/gometalinter
 	$(shell echo $$GOPATH/bin/gometalinter) --install
 
@@ -19,13 +22,16 @@ benchmark:
 	$(GO) test -bench .
 
 build:
-	$(GO) build -o ./try
+	$(GO) build --ldflags "-X main.Version=$(VERSION)" -o $(NAME)
+
+release:
+	./release.sh
 
 test:
 	$(GO) test
 
 install: build
-	install try $(PREFIX)/bin/try
+	install watch $(PREFIX)/bin/watch
 
 uninstall:
-	rm -rf $(PREFIX)/bin/try
+	rm -rf $(PREFIX)/bin/watch

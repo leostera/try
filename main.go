@@ -3,59 +3,64 @@ package main
 import (
 	"flag"
 	"fmt"
+	omg "github.com/ostera/oh-my-gosh/lib"
 	"time"
 )
 
+// Version string prefilled at build time
+var (
+	Version string
+
+  i string
+  retry int
+  factor float64
+  version bool
+  usage bool
+)
+
 func main() {
-	var i string
 	flag.StringVar(&i, "i", "1s", "")
 	flag.StringVar(&i, "interval", "1s", "")
 
-	var retry int
 	flag.IntVar(&retry, "r", 10, "")
 	flag.IntVar(&retry, "retries", 10, "")
 
-	var factor float64
 	flag.Float64Var(&factor, "f", 2, "")
 	flag.Float64Var(&factor, "factor", 2, "")
 
-	var version bool
 	flag.BoolVar(&version, "v", false, "")
 	flag.BoolVar(&version, "version", false, "")
 
-	var usage bool
 	flag.BoolVar(&usage, "h", false, "")
 	flag.BoolVar(&usage, "help", false, "")
 
 	flag.Parse()
 
-	if version {
-		die(0, Version)
-	}
-
 	command := flag.Args()
+
+	if version {
+		omg.Die(0, Version)
+	}
 
 	if usage || len(command) == 0 {
 		help()
-		die(0, "")
+		omg.Die(0, "")
 	}
 
-	if !commandExists(command) {
-		die(0, "Executable not found in PATH")
+	if !omg.CommandExists(command) {
+		omg.Die(0, "Executable not found in PATH")
 	}
-
-	factorDuration := time.Duration(factor)
 
 	interval, err := time.ParseDuration(i)
 	if err != nil {
-		die(0, "Invalid interval: try 1s, 1ms, 2h45m2s")
+		omg.Die(0, "Invalid interval: try 1s, 1ms, 2h45m2s")
 	}
 
-	backoff(interval, factorDuration, retry, func() {
-		status := run(command)
-		printStatus(status)
+	backoff(interval, factor, retry, func() {
+		status := omg.Run(command)
+		omg.PrintStatus(status)
 		if status == 0 {
-			die(status, "")
+			omg.Die(status, "")
 		}
 	})
 }
@@ -80,4 +85,12 @@ func help() {
 
 `
 	fmt.Print(s)
+}
+
+func backoff(d time.Duration, f float64, r int, fn func()) {
+  for ; r > 0; r-- {
+    fn()
+    time.Sleep(d)
+    d = time.Duration( float64(d) * f )
+  }
 }
