@@ -31,7 +31,7 @@ test:
 	$(GO) test
 
 install: build
-	install watch $(PREFIX)/bin/watch
+	install $(NAME) $(PREFIX)/bin/$(NAME)
 
 uninstall:
-	rm -rf $(PREFIX)/bin/watch
+	rm -rf $(PREFIX)/bin/$(NAME)
