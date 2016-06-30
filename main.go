@@ -11,11 +11,11 @@ import (
 var (
 	Version string
 
-  i string
-  retry int
-  factor float64
-  version bool
-  usage bool
+	i       string
+	retry   int
+	factor  float64
+	version bool
+	usage   bool
 )
 
 func main() {
@@ -88,9 +88,9 @@ func help() {
 }
 
 func backoff(d time.Duration, f float64, r int, fn func()) {
-  for ; r > 0; r-- {
-    fn()
-    time.Sleep(d)
-    d = time.Duration( float64(d) * f )
-  }
+	for ; r > 0; r-- {
+		fn()
+		time.Sleep(d)
+		d = time.Duration(float64(d) * f)
+	}
 }
