@@ -99,3 +99,11 @@ BenchmarkRunExit-4                   300           3834855 ns/op
 ok      _/Users/leostera/repos/watch    3.908s
 exit: 0
 ```
+
+## Next Steps
+
+See the [issues page](https://github.com/ostera/try/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement) for a list of planned enhancements and features.
+
+## License
+
+See [LICENSE.md](https://github.com/ostera/try/blob/master/LICENSE).
