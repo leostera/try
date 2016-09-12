@@ -52,29 +52,28 @@ As complexity arises, `bash` syntax gets more and more cryptic.
 My interim solution for it was this:
 
 ```bash
-#!/bin/bash -xe
+#!/bin/bash
 
-COMMAND=$*
+readonly COMMAND=$*
+echo About to run: $COMMAND
+
+let COUNTER=10
+let COMMAND_STATUS=0
+
+trap 'exit $COMMAND_STATUS;' EXIT;
 
 exec 3>&1
 exec 4>&2
-DONE=$(
-  trap 'exit 0;' ERR;
-  COUNTER=0
-  RESULT=$(
-    while [[ $COUNTER -lt 10 ]] \
-    && ! eval $COMMAND 1>&3 2>&4 \
-    && sleep $(($COUNTER*10)); do
-      echo "Retry $COUNTER..."
-      let COUNTER++
-    done
-  )
-  echo YES
-)
 
-if [ -z "$DONE" ] || [ "$DONE" == \'\' ]; then
-  exit 1
-fi
+for i in $(seq 0 $COUNTER); do
+  eval $COMMAND 1>&3 2>&4
+  COMMAND_STATUS=$?
+  if [[ $COMMAND_STATUS == 0 ]]; then
+    exit 0
+  fi
+  echo "Retry: $i"
+  sleep $(($i*2))
+done
 ```
 
 Hacky, but does the job. Now it's time I have a version I can run anywhere without
